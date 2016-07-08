@@ -281,6 +281,44 @@ subs_test_() ->
     ]
 .
 
+ddiv_test_() ->
+    Cases = [
+        {
+            "even_div",
+            #decimal{unscaled=100, scale=0},
+            #decimal{unscaled=5, scale=0},
+            #decimal{unscaled=20, scale=0}
+        },
+        {
+            "even_div_d1_scale",
+            #decimal{unscaled=100, scale=5},
+            #decimal{unscaled=5, scale=0},
+            #decimal{unscaled=2, scale=4}
+        },
+        {
+            "even_div_d2_scale",
+            #decimal{unscaled=100, scale=0},
+            #decimal{unscaled=5, scale=5},
+            #decimal{unscaled=2000000, scale=0}
+        },
+        {
+            "irrational_div_d1_scale",
+            #decimal{unscaled=100, scale=5},
+            #decimal{unscaled=3, scale=0},
+            #decimal{unscaled=3333333333333, scale=16}
+        },
+        {
+            "irrational_div_d2_scale",
+            #decimal{unscaled=100, scale=0},
+            #decimal{unscaled=3, scale=5},
+            #decimal{unscaled=33333333333333333333333, scale=16}
+        }
+    ],
+    [{Descriptor, ?_assert(decimal:equals(Expected, ddiv(Base, Exponent)))}
+        || {Descriptor, Base, Exponent, Expected} <- Cases
+    ]
+.
+
 convert_strings_to_decimals_test_() ->
     Cases = [
         { "test_integer", <<"463">>, #decimal{unscaled=463, scale=0} },
