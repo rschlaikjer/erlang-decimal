@@ -75,7 +75,22 @@ rescale(D1=#decimal{unscaled=U1, scale=S1}, D2=#decimal{unscaled=U2, scale=S2}) 
              scale = S2
          },
          D2}
+    end;
+%% Rescale a single decimal to a specified scale, potentially losing information
+rescale(#decimal{unscaled=U, scale=S}, Scale) when is_integer(Scale) ->
+    case Scale > S of
+        true ->
+            #decimal{
+                unscaled=U * intpow(10, Scale - S),
+                scale=Scale
+                };
+        false ->
+            #decimal{
+                unscaled=U div intpow(10, S - Scale),
+                scale=Scale
+            }
     end.
+
 
 %% Sum two decimals
 sum(D1=#decimal{}, D2=#decimal{}) ->
