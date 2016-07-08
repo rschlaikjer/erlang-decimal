@@ -15,4 +15,11 @@ Multiplication:
 
     decimal:as_binary(decimal:mul(decimal:new(2, 1), decimal:new(2, 0))) -> <<"0.40">>
 
-Haven't needed division yet.
+Division:
+
+    decimal:as_binary(
+        decimal:ddiv(decimal:new(100, 5), decimal:new(3, 0))
+    ) -> <<"0.0003333333333333">>
+    decimal:as_binary(
+        decimal:ddiv(decimal:new(100, 5), decimal:new(3, 0), 32)
+    ) ->  <<"0.00033333333333333333333333333333">>
