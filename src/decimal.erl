@@ -6,6 +6,7 @@
 -export([sum/2]).
 -export([sub/2]).
 -export([mul/2]).
+-export([ddiv/2,ddiv/3]).
 
 -record(decimal, {unscaled, scale}).
 
@@ -115,6 +116,18 @@ mul(D1=#decimal{}, D2=#decimal{}) ->
        unscaled = S1 * S2,
        scale = Scale + Scale
       }.
+
+%% Divide one decimal by another (D1 / D2) with default precision
+ddiv(D1=#decimal{}, D2=#decimal{}) ->
+    ddiv(D1, D2, 16).
+
+%% Divide one decimal by another (D1 / D2) with custom precision
+ddiv(D1=#decimal{}, #decimal{unscaled=U2, scale=S2}, Precision) ->
+    #decimal{unscaled=U1, scale=S1} = rescale(D1, S2 + Precision),
+    #decimal{
+       unscaled=U1 div U2,
+       scale=S1 - S2
+    }.
 
 -ifdef(TEST).
 -include_lib("eunit/include/eunit.hrl").
